@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style.css')}}">
+</head>
+<body>
+    <div class ="header">
+   <h1>Stock Predictions Made With Python </h1>
+        <div class="ascii-art">
+
+            /^\/^\
+         _|__|  O|
+\/     /~     \_/ \
+ \____|__________/  \
+        \_______      \
+                `\     \                 \
+                  |     |                  \
+                 /      /                    \
+                /     /                       \\
+              /      /                         \ \
+             /     /                            \  \
+           /     /             _----_            \   \
+          /     /           _-~      ~-_         |   |
+         (      (        _-~    _--_    ~-_     _/   |
+          \      ~-____-~    _-~    ~-_    ~-_-~    /
+            ~-_           _-~          ~-_       _-~
+               ~--______-~                ~-___-~
+
+
+
+</div>
+    <form class="searchBar" action="{{ url_for('ticker') }}" method="post" >
+
+
+      <select name="search" id="cars">
+            <option value="FB">Facebook</option>
+            <option value="NFLX">Netflix</option>
+            <option value="AMZN">Amazon</option>
+            <option value="TSLA">Tesla</option>
+            <option value="AAPL">Apple</option>
+            <option value="INTC">Intel</option>
+            <option value="IBM">IBM</option>
+            <option value="NVDA">Nvidia </option>
+            <option value="KO">Coca-Cola</option>
+            <option value="GOOG">Google</option>
+            <option value="DELL">Dell</option>
+            <option value="EBAY">eBay</option>
+            <option value="DIS">Walt Disney</option>
+            <option value="MCD">McDonald</option>
+            <option value="LYG">Lloyds Bank</option>
+            <option value="RAZFF">Razer </option>
+            <option value="PZZA">Papa John's</option>
+            <option value="JD">JD Sports</option>
+            <option value="TSCO">Tesco</option>
+            <option value="DPZ">Domino's </option>
+            <option value="NOK">Nokia</option>
+
+
+        </select>
+       <button   type="submit"><i class="fa fa-search"></i>Submit</button>
+    </form>
+    </div>
+    <div class="topTitle">
+    <h1>After Pressing Button Please Wait! It Can Take Minute Or Two To Load Whole Page.</h1>
+        </div>
+    <div>
+
+    </div>
+</body>
+</html>
