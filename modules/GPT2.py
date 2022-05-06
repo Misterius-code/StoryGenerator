@@ -2,70 +2,65 @@ import torch
 from transformers  import GPT2LMHeadModel , GPT2Tokenizer
 from transformers import AutoTokenizer
 from summarizer import TransformerSummarizer
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 import time
 
-def model():
+def model(text,max_length,min_length,top_k,modelPath, ):
     start = time.time()
-
-    print("Hello Wrold")
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
     #device = torch.device("cuda")
-    print(torch.cuda.get_arch_list())
-    print(torch.version.cuda)
+    #print(torch.cuda.get_arch_list())
+    #print(torch.version.cuda)
     #tokenizer = GPT2Tokenizer.from_pretrained('gpt2-medium')
-    tokenizer = GPT2Tokenizer.from_pretrained('gpt2-medium')
-    model = GPT2LMHeadModel.from_pretrained('gpt2-medium-test' ,
-    #model = GPT2LMHeadModel.from_pretrained('gpt2-medium' ,
+    tokenizer = GPT2Tokenizer.from_pretrained(f'models\\{modelPath}\\tokenizer')
+    model = GPT2LMHeadModel.from_pretrained(f'models\\{modelPath}\\{modelPath}' ,
+
 
     pad_token_id = tokenizer.eos_token_id)
-
-    sample="Once Upon a Time there was a knight in a castle."
-    sample1='''
-   He came to them in the heart of winter, asking for his Cobweb Bride.
-He arrived everywhere, all at once. In one singular moment, he was
-seen, heard, felt, remembered. Some inhaled his decaying scent. Others
-bitterly tasted him.
-And everyone recognized Death in one way or another, just before
-the world was suspended.
-But Death’s human story began in Lethe, one of the three kingdoms of the
-Imperial Realm.
-It was evening, and the city of Letheburg reposed in amber lantern
-lights and thickening blue shadows. At some point there had been a
-silence, a break in the howling of the wind, as the snow started to fall.
-The silence preceded him. It lasted for a few moments, then he heard the sound of footsteps approaching. He turned to see a young woman, clad in a white  cloak, standing in front of him, her eyes wide and her hands clasped behind
- her back. Her hair was pulled back into a ponytail and she was wearing a black dress with a red ribbon tied around her neck. She wore a pair of white gloves, which she held in her right hand and held out to him with her left. "I
-'m sorry," she said, "but I don't know what to do." Suddenly a big dragon came to the city."What's wrong?" he asked, his voice hoarse. The woman looked up at him in surprise, but she didn't say anything. Then she turned around and walked away, leaving behind a trail of snow behind her as she did so. A few minutes later
-, she came back and sat down on the steps of her house, staring at the sky. When she looked back up again, there was no sign of Death.'''
     model.to('cuda')
+    print("Generating Text based on ",len(text.split()))
+    print(text)
     #model.train()
     torch.cuda.empty_cache()
-    input_ids = tokenizer.encode(sample,return_tensors='pt')
+    input_ids = tokenizer.encode(text,return_tensors='pt')
     input_ids = input_ids.to(device)
 
     output = model.generate(input_ids,
-                            max_length=200,
+                            max_length=max_length,
                             #num_beams=2,
                             #no_repeat_ngram_size=2,
-                            min_length=70,
+                            min_length=min_length,
                             do_sample=True,
-                            top_k=40,
-                            batch_size=2,
+                            top_k=top_k,
+                            #batch_size=2,
 
-                            #early_stopping=False
+                            #early_stopping=True
                             )#True
-    print("Sample:")
-    finish=tokenizer.decode(output[0], skip_special_tokens = True)
-    print(tokenizer.decode(output[0], skip_special_tokens = True))
-    end = time.time()
-    print("Finish")
-    print(end - start)
+    #print("Sample:")
+    generatedText=tokenizer.decode(output[0], skip_special_tokens = True)
+    #print(tokenizer.decode(output[0], skip_special_tokens = True))
+    finalText=generatedText[len(text):]
+    #print("GEN12",finalText)#.splitlines)
 
-    return finish
+    #print(generatedText)
+    #print(len(text))
+    end = time.time()
+    print("Model generated: " , len(finalText.split())," in ",end - start )
+
+
+
+
+    return finalText
 
 
 
 def sum():
+    from transformers import AutoTokenizer, AutoModelForCausalLM
+
+    tokenizer = AutoTokenizer.from_pretrained("mrm8488/diltilgpt2-finetuned-bookcopus-10")
+
+    model = AutoModelForCausalLM.from_pretrained("mrm8488/diltilgpt2-finetuned-bookcopus-10")
     body = '''
           Every year on Dudley’s birthday his parents took him and a
 friend out for the day, to adventure parks, hamburger bars or the
@@ -113,3 +108,25 @@ scrawny boy with a face like a rat.
     GPT2_model = TransformerSummarizer(transformer_type="GPT2", transformer_model_key="gpt2-large")
     full = ''.join(GPT2_model(body, min_length=300))
     print(full)
+
+def sum2(long_text,max_length):
+    start = time.time()
+    print("Summarazing text")
+    tokenizer = AutoTokenizer.from_pretrained("slauw87/bart_summarisation")
+
+    model = AutoModelForSeq2SeqLM.from_pretrained("slauw87/bart_summarisation")
+    inputs = tokenizer.encode("summarize: " + long_text,
+                              return_tensors='pt',
+                             # max_length=512,
+                              truncation=True)
+
+    summary_ids = model.generate(inputs, max_length=max_length, min_length=max_length-20, length_penalty=3.0, num_beams=int(2), )
+    summaryText=tokenizer.decode(summary_ids[0], skip_special_tokens=True, clean_up_tokenization_spaces=False)
+    # summary = tokenizer.decode(summary_ids[0])
+    #print(tokenizer.decode(summary_ids[0], skip_special_tokens=True, clean_up_tokenization_spaces=False))
+    end = time.time()
+   # print("Finish")
+   # print(end - start)
+    print("Model summarized: " ,len(long_text.split()), " into " ,len(summaryText.split())," in ",end - start )
+
+    return summaryText
