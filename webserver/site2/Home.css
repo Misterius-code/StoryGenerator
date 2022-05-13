@@ -6,6 +6,22 @@
 .u-section-1 .u-sheet-1 {
   min-height: 978px;
 }
+#firstChoice{
+  border-style: solid;
+    float: left;
+  width: 50%;
+    text-align: center;
+  height: 200px;
+
+}
+#secondChoice{
+  border-style: solid;
+    float: left;
+  width: 50%;
+    text-align: center;
+  height: 200px;
+
+}
 
 .u-section-1 .u-text-1 {
   font-size: 4.5rem;
@@ -19,10 +35,11 @@
 }
 
 .u-section-1 .u-text-3 {
+
   font-weight: 700;
   font-size: 3rem;
   width: 447px;
-  margin: 156px auto 30px;
+  margin: 120px auto 30px;
 }
 
 @media (max-width: 1199px) {

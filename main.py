@@ -14,11 +14,10 @@ if __name__ == '__main__':
         2: Fine-tune text genration model
         3: Fine-tune titles
      """))
-    decision=1
     if decision == 1:
         flaskServer.run()
     elif decision == 2:
-        FineTuneModel.tuneModel()
+        FineTuneModel.run()
     elif decision == 3:
-        FineTuneTitle.fineTune()
+        FineTuneTitle.run()
  

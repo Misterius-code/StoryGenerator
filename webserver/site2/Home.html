@@ -42,27 +42,54 @@ function closeNav() {
 }
   $(document).ready(function() {
     document.getElementById("show").disabled=true; // disable button
+      $("#selectOption").hide()
 
       var proffesion="knight";
+      var name="Luna"
+      var gender="girl"
       var timer = '';
+      console.log("please work")
       $('input#proffesion').keypress(function() {
         var _this = $(this);
         clearTimeout(timer);
         timer = setTimeout(function() {
               document.getElementById("mainText").innerText = document.getElementById("mainText").innerText.replaceAll(proffesion,_this.val());
               proffesion=_this.val();
+                    console.log("please work222")
+
         }, 3000);
       });
-          $('input#lols').keypress(function() {
+          $('input#name').keypress(function() {
         var _this = $(this);
         clearTimeout(timer);
         timer = setTimeout(function() {
-              document.getElementById("mainText").innerText = document.getElementById("mainText").innerText.replaceAll(proffesion,_this.val());
-              proffesion=_this.val();
+              document.getElementById("mainText").innerText = document.getElementById("mainText").innerText.replaceAll(name,_this.val());
+              name=_this.val();
         }, 3000);
       });
   
-  
+   $('select#gender').on('click',function() {
+        var _this = $(this);
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+              document.getElementById("mainText").innerText = document.getElementById("mainText").innerText.replaceAll(gender,_this.val());
+              gender=_this.val();
+                    console.log("please work222",_this.val())
+          if (_this.val()=="boy") {
+                          document.getElementById("mainText").innerText = document.getElementById("mainText").innerText.replaceAll("Her","His");
+              document.getElementById("mainText").innerText = document.getElementById("mainText").innerText.replaceAll("She","He");
+                       document.getElementById("mainText").innerText = document.getElementById("mainText").innerText.replaceAll("her","his");
+              document.getElementById("mainText").innerText = document.getElementById("mainText").innerText.replaceAll("she","he");
+          }
+          else{
+                         document.getElementById("mainText").innerText = document.getElementById("mainText").innerText.replaceAll("His","Her");
+              document.getElementById("mainText").innerText = document.getElementById("mainText").innerText.replaceAll("He","She");
+                       document.getElementById("mainText").innerText = document.getElementById("mainText").innerText.replaceAll("his","her");
+              document.getElementById("mainText").innerText = document.getElementById("mainText").innerText.replaceAll("he","she");
+          }
+
+        }, 3000);
+         });
   
       //$('input[name=suggest]').keyup($.debounce(onKeyUp, 300));
       //console.log(test1)
@@ -93,7 +120,12 @@ function closeNav() {
           'title':document.getElementById("title").innerText,
           'model':$( "#advModel option:selected" ).text(),
           'clicked':clicked,
+          'gender':$( "#gender option:selected" ).text(),
+          'topK':document.getElementById("topK").value,
+          'temp':document.getElementById("temperature").value,
+
           beforeSend: function() {
+            console.log("TRALALAL ",document.getElementById("topK").innerText)
             generateButton.prop('disabled', true); // disable button
             localStorage.setItem("prevText",$("#mainText").text());
           }
@@ -101,12 +133,19 @@ function closeNav() {
         success: function(response) {
           generateButton.prop('disabled', false); // enable button
           document.getElementById("mainText").innerHTML =localStorage.getItem("prevText")+response.storyText;
-
           //document.getElementById("mainText").innerHTML=response.storyText;
           console.log(response.storyText);
-          if(response.storySumChoice1!==undefined){
+          if(response.secondChoice!==undefined){
             console.log("NOT NULL")
-            console.log(response.storySumChoice1)
+            console.log(response.secondChoice)
+            $("#selectOption").show()
+
+            document.getElementById("firstChoiceText").innerHTML =response.sumChoice;
+            document.getElementById("secondChoiceText").innerHTML =response.secondChoiceSum;
+            localStorage.setItem("firstChoice",response.storyText)
+            localStorage.setItem("secondChoice",response.secondChoice)
+
+
           }
           document.getElementById("title").innerHTML=response.storyTitle;
            $(show).click()
@@ -120,18 +159,23 @@ function closeNav() {
   
   
   })
+      $("#firstChoiceBTN").on('click',function(e) {
+            document.getElementById("mainText").innerHTML =localStorage.getItem("prevText")+localStorage.getItem("firstChoice");
+       $("#selectOption").hide()
+      });
+      $("#secondChoiceBTN").on('click',function(e) {
+            document.getElementById("mainText").innerHTML =localStorage.getItem("prevText")+localStorage.getItem("secondChoice");
+       $("#selectOption").hide()
+
+      });
     $("#show").on('click',function(e) {
     //console.log($( "#advModel option:selected" ).text())
     e.preventDefault();
-  
     var basicSett = document.getElementById("advSet");
     var formData = $(basicSett).serializeArray();
     var showButton = $(this);
     clicked+=1
-
     localStorage.setItem("prevText",$("#mainText").text());
-  
-  
    // console.log(document.getElementById("mainText").innerText,"NANANANANANASNDANSDNASd",formData[0].value)
     $.ajax({
         url: "{{ url_for('nextPage') }}",
@@ -141,10 +185,13 @@ function closeNav() {
           'length':formData[0].value,
          // 'title':document.getElementById("title").innerText,
           'model':$( "#advModel option:selected" ).text(),
+          'clicked':clicked,
+
           beforeSend: function() {
             showButton.prop('disabled', true); // disable button
             document.getElementById("mainText").innerHTML =localStorage.getItem("prevText")+ localStorage.getItem("showText");
-  
+              localStorage.setItem("prevText",document.getElementById("mainText").innerHTML);
+
           }
       },
         success: function(response) {
@@ -156,7 +203,17 @@ function closeNav() {
           } else {
             document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
           }
-  
+      if(response.secondChoice!==undefined){
+            console.log("NOT NULL")
+            console.log(response.secondChoice)
+            $("#select").show()
+            document.getElementById("firstChoiceText").innerHTML =response.sumChoice;
+            document.getElementById("secondChoiceText").innerHTML =response.secondChoiceSum;
+            localStorage.setItem("firstChoice",response.storyText)
+            localStorage.setItem("secondChoice",response.secondChoice)
+
+
+          }
   
             //gen.value = response;
          },
@@ -226,9 +283,9 @@ function closeNav() {
       </div></header>
     <section class="u-align-center u-clearfix u-image u-shading u-section-1" src="" id="sec-8208" data-image-width="1600" data-image-height="1067">
       <div class="u-clearfix u-sheet u-sheet-1">
-        <h1 class="u-custom-font u-font-lobster u-text u-title u-text-1"> Short Novel G​enerator</h1>
-        <h1 class="u-custom-font u-font-lobster u-text u-text-default u-title u-text-2">Create Your Own Sto​ry</h1>
-        <p class="u-custom-font u-font-lobster u-large-text u-text u-text-variant u-text-3">Once upon​ ​time...</p>
+        <h1 class="u-custom-font u-font-lobster u-text u-title u-text-1"> Short Novel Generator</h1>
+        <h1 class="u-custom-font u-font-lobster u-text u-text-default u-title u-text-2">Create Your Own Story</h1>
+         <p class="u-custom-font u-font-lobster u-large-text u-text u-text-variant u-text-3">Once upon time...</p>
       </div>
     </section>
     <section class="u-clearfix u-section-2" id="sec-e573">
@@ -238,11 +295,24 @@ function closeNav() {
           </h2>
           <div class="fr-view u-clearfix u-rich-text u-text u-text-2">
             <p id="isPasted">
-              <div id="mainText" style="font-size: 1.5rem;" contenteditable="true">Once upon a time, there was a young girl &nbsp;in the village. Everbody in the villeage called him boy. His dream was to become a knight. He did not know that his dream will fulfill soon. However not the way &nbsp;wanted. One chill night when everybody in the village were celeberating a Kupala Night which is a shortest night in the year. A dragon attacked village by setting every house on fire. It look liked a hell came into earth. Evervbody in the village went dead despite one young . The next moring a &nbsp;found &nbsp;and took it for traning. &nbsp;</div>
+              <div id="mainText" style="font-size: 1.5rem;" contenteditable="true">Once upon a time, there was a young girl in the village. Everybody in the village called her Luna. Her dream was to become a female knight. She did not know that this dream will fulfil soon. However, not the way Luna wanted. One chill night, everybody in the village were celebrating the shortest night in the year. Suddenly, the dragon attacked a village.&nbsp;</div>
             </p>
             <p>
               <br>
             </p>
+            <div id="selectOption">
+            <div id="firstChoice"  visible="false">
+              <span id="firstChoiceText"></span>
+                <br>
+                          <button id="firstChoiceBTN"  class="u-border-2 u-border-hover-palette-1-light-2 u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-palette-1-dark-1 u-palette-1-base u-radius-50 u-btn-2">SELECT</button>
+            </div>
+                  <div id="secondChoice"  visible="false">
+              <span id="secondChoiceText"></span>
+                    <br>
+                          <button id="secondChoiceBTN"  class="u-border-2 u-border-hover-palette-1-light-2 u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-palette-1-dark-1 u-palette-1-base u-radius-50 u-btn-2">SELECT</button>
+
+            </div>
+              </div>
           </div>
             <button id="generate"  class="u-border-2 u-border-hover-palette-1-light-2 u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-palette-1-dark-1 u-palette-1-base u-radius-50 u-btn-1">GENERATE</button>
             <button id="show"  class="u-border-2 u-border-hover-palette-1-light-2 u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-palette-1-dark-1 u-palette-1-base u-radius-50 u-btn-1">SHOW </button>
@@ -258,18 +328,18 @@ function closeNav() {
             <form action="#" id="basicSet" method="POST" class="u-clearfix u-form-spacing-10 u-form-vertical u-inner-form" source="custom" name="form" style="padding: 10px;">
               <div class="u-form-group u-form-group-1">
                 <label for="text-6339" class="u-label u-text-palette-1-light-1">Main Character Name</label>
-                <input type="text" id="text-6339" name="text-1" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" placeholder="Luna">
+                <input type="text" id="name" name="text-1" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" placeholder="Luna">
               </div>
               <div class="u-form-group u-form-group-2">
                 <label for="text-6e54" class="u-label u-text-palette-1-light-1">Proffesion</label>
-                <input type="text" placeholder="Wizzard" id="text-6e54" name="text" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white">
+                <input type="text" placeholder="Wizzard" id="proffesion" name="text" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white">
               </div>
               <div class="u-form-group u-form-select u-form-group-3">
-                <label for="select-1a8e" class="u-label u-text-palette-1-light-1">Gender</label>
+                <label for="gender" class="u-label u-text-palette-1-light-1">Gender</label>
                 <div class="u-form-select-wrapper">
-                  <select id="select-1a8e" name="select" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white">
-                    <option value="Boy">Boy</option>
-                    <option value="Girl">Girl</option>
+                  <select id="gender" name="select" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white">
+                    <option value="girl">Girl</option>
+                    <option value="boy">Boy</option>
                   </select>
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" version="1" class="u-caret"><path fill="currentColor" d="M4 8L0 4h8z"></path></svg>
                 </div>
@@ -293,16 +363,16 @@ function closeNav() {
                 <input type="range" id="lenghtNovel" name="number"  min="1000" max="5000" value="1000" step="1000" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" placeholder="2000 Words"  oninput="num.value = this.value">
               </div>
               <div class="u-form-group u-form-group-6">
-                <label for="text-6e54" class="u-label u-text-palette-1-light-1">Top_K</label>
-                <input type="text" id="text-6e54" name="`" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" >
+                <label for="topK" class="u-label u-text-palette-1-light-1">Top_K</label>
+                <input type="number" id="topK" name="`" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" min="1" max="10" value="1" >
               </div>
               <div class="u-form-group u-form-select u-form-group-7">
-                <label for="advModel" class="u-label u-text-palette-1-light-1">Gender</label>
+                <label for="advModel" class="u-label u-text-palette-1-light-1">Model</label>
                 <div class="u-form-select-wrapper">
                   <select id="advModel" name="select" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white">
-                    {% for  result in allModels %}
-                    <option value="{{result}}" >{{result}}</option>
-                    {% endfor %}
+              {% for  result in allModels %}
+        <option value="{{result}}" >{{result}}</option>
+              {% endfor %}
 
                   </select>
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" version="1" class="u-caret"><path fill="currentColor" d="M4 8L0 4h8z"></path></svg>
@@ -310,8 +380,8 @@ function closeNav() {
               </div>
               <div class="u-form-group u-form-group-8">
                 <label for="text-a375" class="u-label u-text-palette-1-light-1">Temperature</label>
-                <output id="numTempe">1000</output>
-                <input type="range" id="temperature" name="number"  min="0.01" max="1" value="0.5" step="0.1" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" placeholder="Randomness"  oninput="numTempe.value = this.value">
+                <output id="numTempe">0.7</output>
+                <input type="range" id="temperature" name="number"  min="0.01" max="1" value="0.7" step="0.1" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" placeholder="Randomness"  oninput="numTempe.value = this.value">
             
               <div class="u-form-send-message u-form-send-success"> Thank you! Your message has been sent. </div>
               <div class="u-form-send-error u-form-send-message"> Unable to send your message. Please fix errors then try again. </div>

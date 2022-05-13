@@ -43,7 +43,7 @@ def model(text,max_length,min_length,top_k,modelPath, ):
     finalText=generatedText[len(text):]
     #print("GEN12",finalText)#.splitlines)
 
-    #print(generatedText)
+    #print(finalText)
     #print(len(text))
     end = time.time()
     print("Model generated: " , len(finalText.split())," in ",end - start )

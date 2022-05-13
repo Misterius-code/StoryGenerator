@@ -27,9 +27,9 @@ def fineTune():
     word_embeddings = model.transformer.wte.weight  # Word Token Embeddings 
     position_embeddings = model.transformer.wpe.weight
 
-    tokenizer.save_pretrained("/content/data/tokenizer/")
-    train_path = '/content/data/trainData.txt'
-    test_path = '/content/data/testData.txt'
+    tokenizer.save_pretrained("./content/data/tokenizer/")
+    train_path = './content/data/trainData.txt'
+    test_path = './content/data/testData.txt'
     model.zero_grad()
     train_dataset, test_dataset,data_collator = load_dataset(train_path,test_path,tokenizer)
     model.deparallelize()
@@ -80,7 +80,7 @@ def load_dataset(train_path,test_path,tokenizer):
     return train_dataset, test_dataset, data_collator
     
 def preProcessData():
-  df=pd.read_csv("/content/data/titles.csv")
+  df=pd.read_csv("./content/data/titles.csv")
   df['description'].replace('', np.nan, inplace=True)
   df.dropna(subset=['description'], inplace=True)
   df['description'].str.replace(r'[^\x00-\x7f]', '')
@@ -100,7 +100,7 @@ def textFile(data,name):
     print(description)
     all_text=all_text+' Description: '+ description +' [SEP] Title: ' + title+'.' + " <|endoftext|> \n "
   with open(
-                f'/content/data/{name}.txt', 'w',
+                f'./content/data/{name}.txt', 'w',
              encoding="utf-8") as f:  
     
               #print(test)
@@ -109,4 +109,7 @@ def textFile(data,name):
      
 
 
-  fineTune()                                                                                              
+
+
+def run():
+    fineTune()

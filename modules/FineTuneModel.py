@@ -10,7 +10,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
 def preProcessData():
-  dataset = load_dataset("bookcorpusopen",data_dir="/content/data")
+  dataset = load_dataset("bookcorpusopen",data_dir="./content/data")
   #print(len(dataset['train']))
   textDataSet=""
   textArray=[]
@@ -36,7 +36,7 @@ def textFile(dataText,name):
    # print(description)
     all_text=all_text+ text + '<|endoftext|> \n '
   with open(
-                f'/content/data/{name}.txt', 'w',
+                f'./content/data/{name}.txt', 'w',
              encoding="utf-8") as f:  
     
               #print(test)
@@ -52,8 +52,8 @@ def tuneModel():
     tokenizer = GPT2Tokenizer.from_pretrained('gpt2-medium')
     model =  GPT2LMHeadModel.from_pretrained('gpt2-medium')
     tokenizer.save_pretrained("/content/data/tokenizer/")
-    train_path = '/content/data/train.txt'
-    test_path = '/content/data/test.txt'
+    train_path = './content/data/train.txt'
+    test_path = './content/data/test.txt'
     model.zero_grad()
     train_dataset, test_dataset,data_collator = load_datasetFunction(train_path,test_path,tokenizer)
     model.deparallelize()
@@ -98,6 +98,6 @@ def load_datasetFunction(train_path,test_path,tokenizer):
         tokenizer=tokenizer, mlm=False,
     )
     return train_dataset, test_dataset, data_collator
-    
 
-tuneModel()
+def run():
+    tuneModel()
