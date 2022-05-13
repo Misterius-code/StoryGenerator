@@ -7,3 +7,4 @@ pdfplumber==0.6.0
 requests==2.27.1
 torch==1.10.2
 transformers==4.17.0
+summarizer==0.0.7

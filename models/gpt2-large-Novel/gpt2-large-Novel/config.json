@@ -1,5 +1,5 @@
 {
-  "_name_or_path": "mrm8488/diltilgpt2-finetuned-bookcopus-10",
+  "_name_or_path": "gpt2-medium",
   "_num_labels": 1,
   "activation_function": "gelu_new",
   "architectures": [
