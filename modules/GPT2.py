@@ -71,5 +71,6 @@ def sum2(long_text,max_length):
    # print("Finish")
    # print(end - start)
     print("Model summarized: " ,len(long_text.split()), " into " ,len(summaryText.split())," in ",end - start )
-
+    #Special thanks to Slauw87 from hugging face for sharing the model.
+    #https://huggingface.co/slauw87/bart_summarisation
     return summaryText
