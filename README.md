@@ -1,13 +1,14 @@
 
 <h1 align="center"> AI Story Generator </h1> <br>
+Final year project for the university which uses all my knowledge I learned on studies. The project is a quite interesting research question, which is:
+
+“Can machine learning be used to modernize electronic books by connecting text generation and user interactions?”. 
+
+This project focuses on the implementation of machine learning transformers algorithms to generate a new text from the original source. The project use machine learning models such as GTP-2 and T5 to generate a book like tales/stories. The main objective of the software is to generate new text which would be a continuation of the previous text. Purpose of it, is to create a book like resemblance from couple texts. 
+
 
 ![image](https://user-images.githubusercontent.com/55873838/186183794-05e75e85-5d77-4aaf-8e42-7052cbead40a.png)
 
-
-Fianl year dissertation project with purpose to solve a research question: “Can machine learning be used to modernize electronic books by connecting text generation and user interactions?”. 
-
-This project focus on implementation of machine learning transformers algorithms to generate a new text from original source. Ma
-Project use machine learning models such as GTP-2 and T5 to generate a book like tales/stories.
 
 <h1>Technologies used:</h1>
 <h4>Python-All the backend and generation functions were writen in Python.</h4>
@@ -27,13 +28,14 @@ Project use machine learning models such as GTP-2 and T5 to generate a book like
 ![image](https://user-images.githubusercontent.com/55873838/186206578-f44e7c08-0e86-4d27-af29-9836912f4d39.png)
 
 <h2 ">Text Generation</h2>
+<h4>Program initaly takes a story from the website and depending of the size of the text it either summarize it or place is straight to model. Model generate a new text based on the input and it is capable of generating 250 words every minute. Generated text is mostly coherent and contains a continuation of the previous story.</h4>
 <p align="center" >
  
- ![image](https://user-images.githubusercontent.com/55873838/186212862-619147b9-f4d7-405f-ac25-94aec6b03b8b.png)
 
 </p>
 
-<h2 align="center">Influance options</h2>
+<h2>Influance options</h2>
+<h4></h4>Influence options are one of the most interesting features which generates 2 continuations of story. User needs to select which story line would like to continue. Based on user input a story will go into the one of 2 directions. The only problem is that user would need to wait a little bit longer for story to appear  as it needs to generate 2 stories instead of one. 
 <p align="center" >
  
 ![image](https://user-images.githubusercontent.com/55873838/186211413-dcb3500f-8031-430b-b44e-2ac39cf07908.png)
@@ -42,7 +44,6 @@ Project use machine learning models such as GTP-2 and T5 to generate a book like
 <h4>Main character customization</h4>
 <h4>Fine-tuning</h4>
 <h4>Advanced Settings</h4>
-<h4>Live text edit</h4>
 <h4>Live text edit</h4>
 <h4>Summarization</h4>
 
@@ -63,7 +64,7 @@ Project might not or run much slower if user do not meet those requirments.
 
 Please make sure CUDA is installed properly of your device. 
 
-Open terminal and move to root of project then use this command:![Uploading image.png…]()
+Open terminal and move to root of project then use this command:
 
 pip install -r ./requirements.txt
 
@@ -71,4 +72,3 @@ If you encounter any problem with the project, please contanct me on:
 4alekm54@solent.ac.uk
 or
 Quakemisterius@gmail.com
-![Uploading image.png…]()
