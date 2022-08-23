@@ -10,12 +10,9 @@ import re
 #Main route
 @app.route('/')
 def home():
-    #Print
-    print("Hello World Flask")
     #list all models
     allModels = os.listdir("models")
-    print(allModels)
-    #remove title model
+    #remove title model as it shoudn't be used by user
     allModels.remove("gpt2-TitleGenerator")
     #Print all models without title model
     print("Available Models:" , allModels)
@@ -26,23 +23,34 @@ def unpackRequest(request):
     # Take a story from website
     storyText = request.form['text']
     print("Story length in words ", len(storyText.split()))
+
     # Take a desired lenght of story
     storyLength = request.form['length']
     print("Story limit", storyLength)
+
     # Story Title
     storyTitle = request.form['title']
+
     # Check whether button was cliecked
     clicked = request.form['clicked']
+    print("Model", clicked)
+
     # Take desired model
     storyModel = request.form['model']
     print("Model", storyModel)
+
     # Take topK parameter from website
     topK = request.form['topK']
     print("top_k", topK)
+
     # Take temperature parameter from website
     temp = request.form['temp']
     print("temp", temp)
-    return storyText,storyLength,storyTitle,clicked,storyModel,topK,temp
+
+    # Lenght of the story counted as words
+    storyWords = len(storyText.split())
+
+    return storyText,storyLength,storyTitle,clicked,storyModel,topK,temp,storyWords
 
 
 
@@ -50,12 +58,9 @@ def unpackRequest(request):
 @app.route('/generate', methods=['POST'])
 def generate():
     if request.method == 'POST':
-        storyText,storyLength,storyTitle,clicked,storyModel,topK,temp=unpackRequest(request)
-        #Count how many word have story
-        storyWords = len(storyText.split())
-        orginalText=storyText
-        testText = ""
-      #  print(int(storyLength))
+        #Unpack a request into right variables
+        storyText,storyLength,storyTitle,clicked,storyModel,topK,temp,storyWords=unpackRequest(request)
+
         textSummarization=""
         if storyWords > int(storyLength):
             print("Story reached the limit ")
@@ -63,59 +68,66 @@ def generate():
         else:
             #limit for story length in words before summurization
             if storyWords > 450:
+
                 #Array which will containt story chunks
-                summarizerText=[]
+                summarizeText=[]
+
                 #summuraize story into chunks
                 textChunk=round(storyWords/600)
                 endChunk=0
+
                 for i in range (1,textChunk+1):
                     startChunk=endChunk
                     endChunk=round(storyWords/textChunk)*i
-                    summarizerText.append(storyText.split()[startChunk:endChunk])
-                    # summuriazie text to get shorter text which will be fed to model
-                    textSummarization=textSummarization+GPT2.sum2(" ".join(summarizerText[i-1]),int(600/textChunk))
+                    summarizeText.append(storyText.split()[startChunk:endChunk])
+
+                    # summuriazie text to shorter instance of text which will be then feed to text generation model
+                    textSummarization=textSummarization+GPT2.sum2(" ".join(summarizeText[i-1]),int(600/textChunk))
+                #Summarized text
                 storyText=textSummarization
-           # print("FINAL SURR",storyText)
+
+            #Check if story have title
             if storyTitle == "Title":
-               # print("TITLEELELALE", round(len(storyText.split()) + 70 / 0.75))
+                #Generate title based on description
                 storyTitle = GPT2.model('Description:' + storyText + 'Title:',
                                         round((len(storyText.split()) + 50) / 0.75), 1, 10, 'gpt2-TitleGenerator', 1)
-                #storyTitle=storyTitle[storyTitle.find('Title:')+len('Title:'):].replace('.','')
+
+                #Remove dot from title as there are no books with dots in title
                 storyTitle=storyTitle.replace('.','')
             else:
                 print("Title already generated.")
-                #print("Sum",summarizerText)
-                #summuriazie text to get shorter text which will be fed to model
+            #Set up max length
             max_length = round((len(storyText.split()) + 300)/ 0.75)
-           # print("MAX", max_length)
             # Setting Min length slightly lower than Max length
             min_length = max_length - 10
+
             # Generating text
-            storyTest=storyText
             storyText = GPT2.model(storyText, max_length, min_length, topK, storyModel,temp)
+
+            #Every 2 generation create extra two stories and let user decice which he would like to pick
             if int(clicked) % 2 == 0:
-             #   print("PART 2")
                 secondChoice = GPT2.model(storyText, max_length, min_length, topK, storyModel,temp)
                 secondChoiceSum=GPT2.sum2(secondChoice,30)
                 sumChoice=GPT2.sum2(storyText,30)
                 return{'storyText':storyText,'sumChoice':sumChoice,'secondChoice':secondChoice,'secondChoiceSum':secondChoiceSum}
-            #orginalText+storyText.encode('utf-8')
-#replace('\n', '\r\n')
 
+            #Possible improvements for text clearity
+            #orginalText+storyText.encode('utf-8')
+            #replace('\n', '\r\n')
+
+        #return a new generated text and title
         return {'storyText': storyText, 'storyTitle':storyTitle}
-        # return render_template('home.html' )
 
 
 
 
 #Next page is a button on the website which is responsible for generation next 250 words
-@app.route('/nextPage',methods=['POST'])
+@app.route('/nextPage', methods=['POST'])
 def nextPage():
     if request.method == 'POST':
         #Recive a request data
-        storyText,storyLength,storyTitle,clicked,storyModel,topK,temp=unpackRequest(request)
-        #Lenght of the story counted as words
-        storyWords = len(storyText.split())
+        storyText,  storyLength, storyTitle, clicked, storyModel, topK, temp, storyWords = unpackRequest(request)
+
         regex = r'([A-z][^.!?]*[.!?]*"?)'
         sumChars=""
         i=0
