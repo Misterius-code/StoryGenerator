@@ -10,23 +10,45 @@ This project focus on implementation of machine learning transformers algorithms
 Project use machine learning models such as GTP-2 and T5 to generate a book like tales/stories.
 
 <h1>Technologies used:</h1>
-<h4>Python</h4>
-<h4>Flask</h4>
-<h4>Machine learning</h4>
-<h4>GPT-2</h4>
-<h4>T5</h4>
-<h4>JavaScript</h4>
+<h4>Python-All the backend and generation functions were writen in Python.</h4>
+<h4>Flask-A framework used as a server to send and revice neccesary data from website to model.</h4>
+<h4>GPT-2 - Main text generation model in project , responsible for creating new lines of text based of orginal story.</h4>
+<h4>T5 -Machine learning model used to summarize stories which were to big to load into GPT-2 model.</h4>
+<h4>JavaScript -Mainly responisble for user ineracation and sending data to backend.</h4>
 
 
  
 
 <h1>Features:</h1>
-<h2 align="center">Title Generation</h2>
-<p align="center" >
+<h2>Title Generation</h2>
+<h4>Title generation is simplest process of text generation in the whole project therefore a smallest available model from GPT-2 series was assigned for this task. Assigning the GPT-2 Small (117M) model gave a better flexibility and outcomes because model is lighter and quicker than other GPT-2 versions. This model was finte-tuned in order create a accurate title based on the story.
+</h4>
   
 ![image](https://user-images.githubusercontent.com/55873838/186206578-f44e7c08-0e86-4d27-af29-9836912f4d39.png)
 
+<h2 ">Text Generation</h2>
+<p align="center" >
+ 
+ ![image](https://user-images.githubusercontent.com/55873838/186212862-619147b9-f4d7-405f-ac25-94aec6b03b8b.png)
+
 </p>
+
+<h2 align="center">Influance options</h2>
+<p align="center" >
+ 
+![image](https://user-images.githubusercontent.com/55873838/186211413-dcb3500f-8031-430b-b44e-2ac39cf07908.png)
+</p>
+<h2>Addational project features which are not descirbed in this file:</h2>
+<h4>Main character customization</h4>
+<h4>Fine-tuning</h4>
+<h4>Advanced Settings</h4>
+<h4>Live text edit</h4>
+<h4>Live text edit</h4>
+<h4>Summarization</h4>
+
+
+
+
 
 <h1>Instalation Instrunctions </h1>
 Please install all requirements from requirements.txt
