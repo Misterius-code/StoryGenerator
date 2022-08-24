@@ -24,21 +24,29 @@ This project focuses on the implementation of machine learning transformers algo
 <h2>Title Generation</h2>
 <h4>Title generation is simplest process of text generation in the whole project therefore a smallest available model from GPT-2 series was assigned for this task. Assigning the GPT-2 Small (117M) model gave a better flexibility and outcomes because model is lighter and quicker than other GPT-2 versions. This model was finte-tuned in order create a accurate title based on the story.
 </h4>
-  
-![image](https://user-images.githubusercontent.com/55873838/186206578-f44e7c08-0e86-4d27-af29-9836912f4d39.png)
+  <p align="center" >
+ 
+![ezgif com-gif-maker (1)](https://user-images.githubusercontent.com/55873838/186506544-aab27e4b-014f-4168-bd0e-473a91a0169a.gif)
+
+</p>
 
 <h2 ">Text Generation</h2>
 <h4>Program initaly takes a story from the website and depending of the size of the text it either summarize it or place is straight to model. Model generate a new text based on the input and it is capable of generating 250 words every minute. Generated text is mostly coherent and contains a continuation of the previous story.</h4>
 <p align="center" >
- 
+
+ ![Screenshot 2022-08-24 210044](https://user-images.githubusercontent.com/55873838/186516624-e11d671d-0eaa-47de-bbfb-9d9196a49c9b.png)
+
 
 </p>
+
 
 <h2>Influance options</h2>
 <h4></h4>Influence options are one of the most interesting features which generates 2 continuations of story. User needs to select which story line would like to continue. Based on user input a story will go into the one of 2 directions. The only problem is that user would need to wait a little bit longer for story to appear  as it needs to generate 2 stories instead of one. 
 <p align="center" >
- 
-![image](https://user-images.githubusercontent.com/55873838/186211413-dcb3500f-8031-430b-b44e-2ac39cf07908.png)
+
+ ![Screenshot 2022-08-24 203217](https://user-images.githubusercontent.com/55873838/186507102-eca96468-672d-41b8-b9a5-30e939660ba5.png)
+
+
 </p>
 <h2>Addational project features which are not descirbed in this file:</h2>
 <h4>Main character customization</h4>
